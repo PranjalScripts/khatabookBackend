@@ -1,0 +1,42 @@
+.sidebar {
+  transition: width 0.3s;
+  overflow: hidden;
+}
+
+.sidebar-open {
+  width: 250px;
+
+}
+
+.sidebar-closed {
+  width: 80px;
+}
+
+.sidebar-link {
+  color: #b3b3b3;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.sidebar-link:hover {
+  color: #bd2323;
+}
+
+.icon {
+  margin-right: 8px;
+}
+
+.toggle-button {
+  font-size: 1.5em;
+}
+
+/* When sidebar is closed, hide text and adjust icon size */
+.sidebar-closed .sidebar-link {
+  justify-content: center; /* Center the icon */
+}
+
+.sidebar-closed .sidebar-link .icon {
+  font-size: 1.5em; /* Larger icons when sidebar is collapsed */
+}
