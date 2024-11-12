@@ -29,6 +29,7 @@ const transactionSchema = new mongoose.Schema(
         transactionType: {
           type: String,
           enum: ["you will get", "you will give"],
+          required: true,
         },
         amount: {
           type: Number,
@@ -48,7 +49,6 @@ const transactionSchema = new mongoose.Schema(
     ],
     outstandingBalance: {
       type: Number,
-    
     },
   },
   { timestamps: true }

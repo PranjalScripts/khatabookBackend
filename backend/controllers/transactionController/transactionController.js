@@ -4,13 +4,13 @@ exports.createTransaction = async (req, res) => {
   try {
     const {
       bookId,
-      userId,
+       
       clientUserId,
       transactionType,
       amount,
       description,
     } = req.body;
-
+const userId = req.user.id;
     // Check if a transaction already exists for the same user and client
     let transaction = await Transaction.findOne({ userId, clientUserId });
 
