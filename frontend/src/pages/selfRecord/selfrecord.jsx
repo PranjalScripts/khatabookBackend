@@ -67,6 +67,12 @@ const SelfRecord = () => {
     fetchTransactions();
   }, []);
 
+  const formatAmount = (amount) => {
+    const absoluteAmount = Math.abs(amount);
+    const color = amount < 0 ? "red" : "green";
+    return <span style={{ color }}>{absoluteAmount}</span>;
+  };
+
   return (
     <div className="d-flex">
       <Sidebar />
@@ -92,7 +98,7 @@ const SelfRecord = () => {
                     <td>{transaction.bookName}</td>
                     <td>{transaction.clientName}</td>
                     <td>{transaction.clientMobile}</td>
-                    <td>{transaction.outstandingBalance}</td>
+                    <td>{formatAmount(transaction.outstandingBalance)}</td>
                     <td>
                       <a
                         href={`https://api.whatsapp.com/send/?phone=%2B91${transaction.clientMobile}&text=Hello%20${transaction.clientName}%2C%20we%20hope%20you%20are%20doing%20well.%20This%20is%20a%20friendly%20reminder%20that%20you%20have%20an%20outstanding%20balance%20of%20${transaction.outstandingBalance}.%20Please%20let%20us%20know%20if%20you%20have%20any%20questions.&type=phone_number&app_absent=0`}
