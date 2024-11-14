@@ -23,7 +23,7 @@ const createBook = async (req, res) => {
 };
 
 // Get all books for the logged-in user
-const getBooks = async (req, res) => {
+const getAllBooks = async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -85,9 +85,32 @@ const deleteBook = async (req, res) => {
   }
 };
 
+//get a book by id
+
+const getBookById = async (req, res) => {
+  try {
+    const { bookId } = req.params;
+    const userId = req.user.id;
+
+    // Find the book by ID and check that it belongs to the logged-in user
+    const book = await TransactionBook.findOne({ _id: bookId, userId });
+    if (!book) {
+      return res
+        .status(404)
+        .json({ message: "Book not found or access denied" });
+    }
+
+    res.status(200).json({ book });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching book" });
+  }
+};
+
 module.exports = {
   createBook,
-  getBooks,
+  getAllBooks,
   updateBook,
   deleteBook,
+  getBookById,
 };
