@@ -11,13 +11,14 @@ import SelfRecord from './pages/selfRecord/selfrecord';
 import Book from './pages/books/book';
 import Users from './pages/clientUsers/clientUsers';
 import Profile from "./pages/profile/userprofile"
+import Landing from './components/LandingPage/Landing';
 function App() {
   return (
 
     
     <Router>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users" element={<Users />} />
         <Route path="/selfrecord" element={<SelfRecord />} />
