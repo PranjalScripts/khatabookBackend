@@ -15,7 +15,6 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Validate email and phone
     if (!emailRegex.test(email)) {
       toast.warn("Please enter a valid email address.");
       return;
@@ -26,15 +25,9 @@ const Signup = () => {
     }
 
     try {
-      //eslint-disable-next-line
       const response = await axios.post(
         "http://localhost:5100/api/v1/auth/signup",
-        {
-          name,
-          email,
-          phone,
-          password,
-        }
+        { name, email, phone, password }
       );
       toast.success("Signup successful! You can now log in.");
       setName("");
@@ -48,15 +41,14 @@ const Signup = () => {
 
   return (
     <div className="d-flex">
-      {/* Sidebar is added here */}
-      <Sidebar />
+      <Sidebar /> {/* Sidebar component */}
 
       <div
         className="container d-flex justify-content-center align-items-center"
-        style={{ height: "100vh", width: "100%" }}
+        style={{ height: "100vh", width: "100%", backgroundColor: "#f8f9fa" }}
       >
-        <div className="card p-4" style={{ maxWidth: "400px", width: "100%" }}>
-          <h2 className="text-center mb-4">Signup</h2>
+        <div className="card p-4 shadow-lg rounded-3" style={{ maxWidth: "400px", width: "100%", borderColor: "#ced4da" }}>
+          <h2 className="text-center mb-4" style={{ color: "#495057" }}>Signup</h2>
           <form onSubmit={handleSignup}>
             <div className="mb-3">
               <label className="form-label">Name</label>
