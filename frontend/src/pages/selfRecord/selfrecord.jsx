@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../Layout/sidebar";
 import axios from "axios";
-
+ import AddTransactions from "./addTransaction/addTransactions"
+import "./selfRecord.css";
 const SelfRecord = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [showAddTransaction, setShowAddTransaction] = useState(false); // New state to control modal visibility
+const userId = localStorage.getItem("userId");
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
         const token = localStorage.getItem("token");
-
         const response = await axios.get(
-          "http://localhost:5100/api/v4/transaction/get-transactions/672b0bfb64c96bb93365eadb",
+          `http://localhost:5100/api/v4/transaction/get-transactions/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -67,6 +68,14 @@ const SelfRecord = () => {
     fetchTransactions();
   }, []);
 
+  const handleAddTransactionClick = () => {
+    setShowAddTransaction(true);
+  };
+
+  const closeAddTransactionModal = () => {
+    setShowAddTransaction(false);
+  };
+
   const formatAmount = (amount) => {
     const absoluteAmount = Math.abs(amount);
     const color = amount < 0 ? "red" : "green";
@@ -78,6 +87,12 @@ const SelfRecord = () => {
       <Sidebar />
       <div className="container">
         <h1>Self Record Page</h1>
+        <button
+          onClick={handleAddTransactionClick}
+          className="btn btn-primary mb-3"
+        >
+          Add Transaction
+        </button>
         {loading ? (
           <p>Loading transactions...</p>
         ) : (
@@ -105,12 +120,10 @@ const SelfRecord = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {/* WhatsApp icon using Font Awesome */}
                         <i
                           className="fab fa-whatsapp"
                           style={{ color: "#25D366", fontSize: "1.5em" }}
                         ></i>
-                        {/* Fallback to image icon if Font Awesome fails */}
                         <img
                           src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png"
                           alt="WhatsApp"
@@ -127,6 +140,21 @@ const SelfRecord = () => {
               )}
             </tbody>
           </table>
+        )}
+
+        {/* AddTransactions Modal */}
+        {showAddTransaction && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <AddTransactions />
+              <button
+                onClick={closeAddTransactionModal}
+                className="btn btn-secondary"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

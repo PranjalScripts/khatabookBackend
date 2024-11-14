@@ -1,33 +1,28 @@
 import React, { useState } from "react";
 import { Navbar, Nav, Button } from "react-bootstrap";
 import {
+  FaChevronRight,
+  FaChevronLeft,
   FaTachometerAlt,
   FaFileAlt,
   FaUsers,
-  FaSignInAlt,
   FaSignOutAlt,
-  FaChevronRight,
-  FaChevronLeft,
+  FaSignInAlt,
   FaBook,
   FaIdCard,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; // Import context
-
-import "./Sidebar.css"; // Assuming you have styles for Sidebar
+import { useAuth } from "../../context/AuthContext";
+import "./Sidebar.css";
 
 const Sidebar = () => {
-  //eslint-disable-next-line
-  const { isLoggedIn, username, logout } = useAuth(); // Use context for state
-  const [isOpen, setIsOpen] = useState(true);
+  const { isLoggedIn, username, logout } = useAuth() || {}; // Ensure safe destructuring
+  const [isOpen, setIsOpen] = useState(true); // Initialize toggle state
   const navigate = useNavigate();
 
+  // Toggle the sidebar state
   const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleLoginClick = () => {
-    navigate("/login");
+    setIsOpen((prevState) => !prevState); // Correctly updates state based on previous value
   };
 
   return (
@@ -40,7 +35,7 @@ const Sidebar = () => {
         <Button
           variant="outline-light"
           className="mb-4 toggle-button"
-          onClick={toggleSidebar}
+          onClick={toggleSidebar} // Ensure toggleSidebar is assigned directly
           aria-expanded={isOpen}
         >
           {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
@@ -57,7 +52,7 @@ const Sidebar = () => {
             <FaBook className="icon" /> {isOpen && "Book"}
           </Nav.Link>
           <Nav.Link href="/users" className="sidebar-link">
-            <FaUsers className="icon" /> {isOpen && " Client Users"}
+            <FaUsers className="icon" /> {isOpen && "Client Users"}
           </Nav.Link>
           {isLoggedIn && (
             <Nav.Link href="/profile" className="sidebar-link">
@@ -67,12 +62,12 @@ const Sidebar = () => {
         </Nav>
 
         <Nav className="mt-auto">
-          {isLoggedIn ? (
+          {isLoggedIn && logout ? (
             <Button variant="outline-light" onClick={logout}>
               <FaSignOutAlt className="icon" /> {isOpen && "Logout"}
             </Button>
           ) : (
-            <Button variant="outline-light" onClick={handleLoginClick}>
+            <Button variant="outline-light" onClick={() => navigate("/login")}>
               <FaSignInAlt className="icon" /> {isOpen && "Login"}
             </Button>
           )}
@@ -81,4 +76,5 @@ const Sidebar = () => {
     </div>
   );
 };
+
 export default Sidebar;

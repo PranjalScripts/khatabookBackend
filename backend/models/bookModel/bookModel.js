@@ -1,4 +1,3 @@
-// transactionBookModel.js
 const mongoose = require("mongoose");
 
 const transactionBookSchema = new mongoose.Schema(
@@ -10,7 +9,7 @@ const transactionBookSchema = new mongoose.Schema(
     },
     bookname: {
       type: String,
-      unique: true,
+      required: true,
       trim: true,
     },
   },
@@ -18,6 +17,9 @@ const transactionBookSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Add a compound unique index on userId and bookname
+transactionBookSchema.index({ userId: 1, bookname: 1 }, { unique: true });
 
 const TransactionBook = mongoose.model(
   "TransactionBook",

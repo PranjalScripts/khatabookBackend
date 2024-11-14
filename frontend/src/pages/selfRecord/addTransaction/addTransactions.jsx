@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../Layout/sidebar";
+ 
 import axios from "axios";
 
 const  AddTransactions = () => {
@@ -7,7 +7,7 @@ const  AddTransactions = () => {
   const [books, setBooks] = useState([]);
   const [transactionData, setTransactionData] = useState({
     bookId: "",
-    userId: "", // Set to your desired user ID or fetch from logged-in user context
+    userId: "",  
     clientUserId: "",
     transactionType: "you will get",
     amount: "",
@@ -95,8 +95,7 @@ const  AddTransactions = () => {
   };
 
   return (
-    <div className="d-flex">
-      <Sidebar />
+ 
 
       <div className="container p-4">
         <h1>Self Record Page</h1>
@@ -196,7 +195,7 @@ const  AddTransactions = () => {
           </button>
         </form>
       </div>
-    </div>
+   
   );
 };
 

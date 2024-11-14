@@ -4,22 +4,22 @@ const ClientUser = require("../../models/clientUserModel/clientUserModel");
 exports.createClientUser = async (req, res) => {
   try {
     const { name, mobile, email } = req.body;
-    const userId = req.userId;
+    const userId = req.user.id;
 
-    // Check if a client with the same email or mobile already exists for the logged-in user
+    // Check if the client already exists for this user
     const existingClient = await ClientUser.findOne({
-      $or: [{ email }, { mobile }],
       userId,
+      name,
+      mobile,
+      email,
     });
-
     if (existingClient) {
-      return res.status(400).json({
-        success: false,
-        message: "Client with the same email or mobile number already exists.",
-      });
+      return res
+        .status(400)
+        .json({ error: "This client already exists for this user" });
     }
 
-    // Create a new client user if no duplicates found
+    // Create a new ClientUser instance
     const clientUser = new ClientUser({
       userId,
       name,
@@ -27,20 +27,18 @@ exports.createClientUser = async (req, res) => {
       email,
     });
 
+    // Save to database
     await clientUser.save();
-    res.status(201).json({ success: true, data: clientUser });
+
+    res
+      .status(201)
+      .json({ message: "Client user created successfully", clientUser });
   } catch (error) {
-    // Check for MongoDB unique constraint errors
-    if (error.code === 11000) {
-      const field = error.keyValue.email ? "email" : "mobile";
-      return res.status(400).json({
-        success: false,
-        message: `Client with this ${field} already exists.`,
-      });
-    }
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error); // Log error for debugging
+    res.status(500).json({ error: "Failed to create client user" });
   }
 };
+
 
 // Get all client users created by the logged-in user
 exports.getClientUsers = async (req, res) => {

@@ -1,43 +1,40 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-// Define the ClientUser schema
 const clientUserSchema = new Schema(
   {
-    // Reference to the User model (merchant)
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    // Client user's name
     name: {
       type: String,
       required: true,
       trim: true,
     },
-    // Client user's mobile number
     mobile: {
       type: String,
       required: true,
       trim: true,
-      unique: true,
     },
-    // Client user's email address
     email: {
       type: String,
       required: true,
       trim: true,
-      unique: true,
       lowercase: true,
     },
-   
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 
-// Create and export the model
+// Enforce unique clients per userId by adding a compound index
+clientUserSchema.index(
+  { userId: 1, name: 1, email: 1, mobile: 1 },
+  { unique:true }
+);
+
 const ClientUser = mongoose.model("ClientUser", clientUserSchema);
 module.exports = ClientUser;

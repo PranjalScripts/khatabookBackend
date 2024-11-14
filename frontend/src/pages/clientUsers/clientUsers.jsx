@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
- import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "../Layout/sidebar";
 import axios from "axios";
@@ -37,27 +37,31 @@ const ClientUsers = () => {
   };
 
   // Create a new client user
-  const createUser = async () => {
-    if (!validateInputs()) {
-      return;
-    }
+const createUser = async () => {
+  if (!validateInputs()) {
+    return;
+  }
 
-    try {
-      const response = await axios.post(`${API_URL}/create-client`, newUser, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setUsers([...users, response.data.data]);
-      setNewUser({ name: "", email: "", mobile: "" });
-      toast.success("User created successfully!");
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        toast.error(error.response.data.message || "Error creating user");
-      } else {
-        toast.error("An unexpected error occurred");
-      }
-      console.error("Error creating user:", error);
+  try {
+    const response = await axios.post(`${API_URL}/create-client`, newUser, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+
+    // Add the new user to the users state without refreshing
+    setUsers((prevUsers) => [...prevUsers, response.data.data]);
+
+    // Clear the form fields
+    setNewUser({ name: "", email: "", mobile: "" });
+    toast.success("User created successfully!");
+  } catch (error) {
+    if (error.response && error.response.status === 400) {
+      toast.error(error.response.data.message || "Error creating user");
+    } else {
+      toast.error("An unexpected error occurred");
     }
-  };
+    console.error("Error creating user:", error);
+  }
+};
 
   // Fetch all client users
   const fetchUsers = async () => {
@@ -65,7 +69,8 @@ const ClientUsers = () => {
       const response = await axios.get(`${API_URL}/getAll-clients`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      setUsers(response.data.data);
+      console.log(response.data); // Verify response structure
+      setUsers(response.data.data || []);
     } catch (error) {
       toast.error("Error fetching client users");
       console.error("Error fetching client users:", error);
@@ -122,10 +127,12 @@ const ClientUsers = () => {
   };
 
   // Filter users based on search query (by name or mobile)
+  // Filter users based on search query (by name or mobile)
   const filteredUsers = users.filter(
     (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.mobile.includes(searchQuery)
+      user &&
+      (user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.mobile?.includes(searchQuery))
   );
 
   // Fetch all users when the component is mounted
@@ -174,7 +181,14 @@ const ClientUsers = () => {
               onChange={handleNewUserChange}
               className="form-control mb-2"
             />
-            <button className="btn btn-primary" onClick={createUser}>
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                createUser();
+                fetchUsers();
+             
+              }}
+            >
               Add User
             </button>
           </div>

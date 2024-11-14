@@ -6,6 +6,14 @@ const createBook = async (req, res) => {
     const { bookname } = req.body;
     const userId = req.user.id; // Assuming the user ID is set in the request by authentication middleware
 
+    // Check if the book already exists for the user
+    const existingBook = await TransactionBook.findOne({ userId, bookname });
+    if (existingBook) {
+      return res
+        .status(400)
+        .json({ message: "You have already created this book." });
+    }
+
     // Create a new book associated with the user
     const newBook = new TransactionBook({
       userId,
@@ -13,16 +21,26 @@ const createBook = async (req, res) => {
     });
 
     await newBook.save();
-    res
+    res 
       .status(201)
       .json({ message: "Book created successfully", book: newBook });
   } catch (error) {
     console.error(error);
+
+    // Handle the unique constraint error (if any)
+    if (error.code === 11000) {
+      return res
+        .status(400)
+        .json({
+          message: "A book with this name already exists for this user.",
+        });
+    }
+
     res.status(500).json({ message: "Error creating book" });
   }
 };
 
-// Get all books for the logged-in user
+// Get all books for the logged-in user 
 const getAllBooks = async (req, res) => {
   try {
     const userId = req.user.id;
