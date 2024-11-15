@@ -7,7 +7,8 @@ const SelfRecord = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddTransaction, setShowAddTransaction] = useState(false); // New state to control modal visibility
-const userId = localStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
+  console.log(userId);
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -18,9 +19,11 @@ const userId = localStorage.getItem("userId");
             headers: {
               Authorization: `Bearer ${token}`,
             },
+           
           }
         );
-
+  
+ 
         if (response.data.success) {
           const transactionData = await Promise.all(
             response.data.data.map(async (transaction) => {

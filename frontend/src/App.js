@@ -12,20 +12,24 @@ import Book from './pages/books/book';
 import Users from './pages/clientUsers/clientUsers';
 import Profile from "./pages/profile/userprofile"
 import Landing from './components/LandingPage/Landing';
+import Loans from './pages/loans/loan';
+import Invoice from './pages/invoice/invoice';
+import CollaborativeBook from './pages/collaborativeBook/collaborativeBook';
 function App() {
   return (
-
-    
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users" element={<Users />} />
         <Route path="/selfrecord" element={<SelfRecord />} />
         <Route path="/book" element={<Book />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/loans" element={<Loans />} />
+        <Route path="/invoice" element={<Invoice />} />
+        <Route path="/collaborativebook" element={<CollaborativeBook/>} />
       </Routes>
 
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />

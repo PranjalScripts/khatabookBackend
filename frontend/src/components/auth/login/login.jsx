@@ -32,9 +32,12 @@ const Login = () => {
         "http://localhost:5100/api/v1/auth/login",
         loginPayload
       );
+      console.log("response", response);
       const { user, token } = response.data;
       login(user); // Pass the user data to context for login
-      localStorage.setItem("token", token); // Store token in localStorage explicitly
+      localStorage.setItem("token", token);
+      console.log("user id",user.id);
+      localStorage.setItem("userId",user.id) 
       toast.success("Login successful");
       navigate("/dashboard");
     } catch (error) {
