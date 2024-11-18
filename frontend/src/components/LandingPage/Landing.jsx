@@ -10,38 +10,56 @@ import {
   ChevronRight,
   Receipt,
   PieChart,
-  Users,
+ 
 } from "lucide-react";
 import "./Landing.css";
-
+import { useAuth } from "../../context/AuthContext"; 
+import {FaEyeSlash, FaEye} from "react-icons/fa";
 function Landing() {
   const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
+
+ 
+  const handleLoginClick = () => {
+    setShowLoginModal(true); // Trigger the modal to show
+  };
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex = /^[0-9]{10}$/; // Assumes a 10-digit phone number
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (!emailRegex.test(identifier) && !phoneRegex.test(identifier)) {
+      toast.warn("Please enter a valid email or 10-digit phone number.");
+      return;
+    }
+
+    const loginPayload = emailRegex.test(identifier)
+      ? { email: identifier, password }
+      : { phone: identifier, password };
+
     try {
       const response = await axios.post(
-        "http://localhost:5100/api/v1/auth/login",
-        {
-          email: identifier,
-          password,
-        }
+        `${process.env.REACT_APP_URL}/api/v1/auth/login`,
+        loginPayload
       );
-      const { token ,user} = response.data;
+      console.log("response", response);
+      const { user, token } = response.data;
+      login(user); // Pass the user data to context for login
       localStorage.setItem("token", token);
+      console.log("user id", user.id);
       localStorage.setItem("userId", user.id);
-      localStorage.setItem("username", user.name);
-      toast.success("Login successful!");
-      setShowLoginModal(false);
+      toast.success("Login successful");
       navigate("/dashboard");
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
     }
   };
-
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       {/* Navbar */}
@@ -200,7 +218,6 @@ function Landing() {
           <div className="row">
             <div className="col-md-3">
               <div className="d-flex align-items-center mb-3">
-              
                 <span className="ms-2 fw-bold text-white">PizeonFly</span>
               </div>
               <p>Making expense management effortless for modern businesses.</p>
@@ -274,65 +291,101 @@ function Landing() {
 
       {/* Login Modal */}
       {showLoginModal && (
-        <>
-          <div
-            className="modal show d-block"
-            tabIndex="-1"
-            role="dialog"
-            aria-labelledby="loginModalLabel"
-            aria-hidden="true"
-            style={{ zIndex: 1050 }}
-          >
-            <div className="modal-dialog modal-dialog-centered" role="document">
-              <div className="modal-content custom-modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="loginModalLabel">
-                    Login
-                  </h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={() => setShowLoginModal(false)}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <form onSubmit={handleLogin}>
-                    <div className="mb-3">
-                      <label className="form-label">Email</label>
-                      <input
-                        type="email"
-                        value={identifier}
-                        onChange={(e) => setIdentifier(e.target.value)}
-                        required
-                        className="form-control"
-                        placeholder="Enter your email"
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label">Password</label>
-                      <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="form-control"
-                        placeholder="Enter your password"
-                      />
-                    </div>
-                    <button type="submit" className="btn btn-primary w-100">
-                      Login
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div>
+          {/* Backdrop */}
           <div
             className="modal-backdrop fade show"
-            style={{ zIndex: 1040 }}
-            onClick={() => setShowLoginModal(false)}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              zIndex: 1040,
+            }}
+            onClick={() => setShowLoginModal(false)} // Close modal on backdrop click
           ></div>
-        </>
+
+          {/* Modal Container */}
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              zIndex: 1050,
+            }}
+          >
+            <div
+              className="card p-4 shadow-lg rounded"
+              style={{
+                maxWidth: "400px",
+                width: "100%",
+                borderColor: "#ced4da",
+                backgroundColor: "#fff",
+              }}
+              onClick={(e) => e.stopPropagation()} // Prevent clicks inside modal from closing it
+            >
+              <h2 className="text-center mb-4" style={{ color: "#495057" }}>
+                Login
+              </h2>
+              <form onSubmit={handleLogin}>
+                <div className="mb-3">
+                  <label className="form-label">Email or Phone</label>
+                  <input
+                    type="text"
+                    value={identifier}
+                    onChange={(e) => setIdentifier(e.target.value)}
+                    required
+                    className="form-control"
+                    placeholder="Enter email or phone"
+                  />
+                </div>
+                <div className="mb-3 position-relative">
+                  <label className="form-label">Password</label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="form-control"
+                    placeholder="Enter password"
+                  />
+                  <button
+                    type="button"
+                    className="position-absolute border-0 bg-transparent"
+                    style={{
+                      top: "70%",
+                      right: "10px",
+                      transform: "translateY(-50%)",
+                      color: "#6c757d",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+                <button type="submit" className="btn btn-primary w-100">
+                  Login
+                </button>
+                <p className="text-center mt-3">
+                  Don’t have an account?{" "}
+                  <a
+                    href="/signup"
+                    className="text-decoration-none"
+                    style={{ color: "#0d6efd" }}
+                  >
+                    Signup here
+                  </a>
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

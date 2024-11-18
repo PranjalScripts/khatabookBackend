@@ -12,7 +12,7 @@ import axios from "axios";
 import Sidebar from "../Layout/sidebar";
 import { toast } from "react-toastify";
 import Header from "./Header";
-
+import Transaction from "./TransactionPage";
 // Register Chart.js components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -50,8 +50,8 @@ const Dashboard = () => {
   });
 
   const API_BOOKS_URL =
-    "http://localhost:5100/api/v2/transactionBooks/getAll-books";
-  const API_CLIENTS_URL = "http://localhost:5100/api/v3/client/getAll-clients";
+    `${process.env.REACT_APP_URL}/api/v2/transactionBooks/getAll-books`;
+  const API_CLIENTS_URL = `${process.env.REACT_APP_URL}/api/v3/client/getAll-clients`;
   const isFetched = useRef(false); // Prevent multiple API calls on the same render
 
   // Helper function to group data by date in ISO format
@@ -163,12 +163,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
   return (
-    <div className="d-flex">
+    <div className="d-flex" style={{ "padding-left": "8rem" }}>
       <Sidebar />
-      <div className="container mt-4">
+      <div className="container mt-4 ">
         <div
           className="charts-container"
           style={{
@@ -181,8 +182,8 @@ const Dashboard = () => {
           <div
             className="chart-container"
             style={{
-              width: "45%",
-              height: "400px",
+              width: "35%",
+              height: "300px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -215,15 +216,17 @@ const Dashboard = () => {
             />
 
             <h3>Count Of Books & Clients</h3>
+
             <Header />
+            <Transaction />
           </div>
 
           {/* Clients Chart - Right Side */}
           <div
             className="chart-container"
             style={{
-              width: "45%",
-              height: "400px",
+              width: "35%",
+              height: "300px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",

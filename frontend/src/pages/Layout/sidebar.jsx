@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Navbar, Nav, Button } from "react-bootstrap";
 import {
-  FaChevronRight,
-  FaChevronLeft,
   FaTachometerAlt,
   FaFileAlt,
   FaUsers,
@@ -12,7 +10,6 @@ import {
   FaIdCard,
   FaHandshake,
   FaHandHoldingUsd,
-  FaFileInvoice,
   FaReceipt,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +18,6 @@ import "./Sidebar.css";
 
 const Sidebar = () => {
   const { isLoggedIn, logout } = useAuth() || {}; // Ensure safe destructuring
-  const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -29,60 +25,54 @@ const Sidebar = () => {
     navigate("/"); // Redirect to Landing page after logging out
   };
 
-  const toggleSidebar = () => setIsOpen((prevState) => !prevState);
-
   return (
-    <div
-      className={`d-flex sidebar ${isOpen ? "sidebar-open" : "sidebar-closed"}`}
-    >
-      <Navbar bg="dark" variant="dark" className="flex-column vh-100 p-3">
-        <Button
-          variant="outline-light"
-          className="mb-4 toggle-button"
-          onClick={toggleSidebar}
-          aria-expanded={isOpen}
-          aria-label="Toggle sidebar"
-        >
-          {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
-        </Button>
-
+    <div className="sidebar-container">
+      <Navbar
+        bg="dark"
+        variant="dark"
+        className="flex-column vh-100 p-2 sidebar"
+      >
         <Nav className="flex-column">
           <Nav.Link
             href="/dashboard"
             className="sidebar-link"
             aria-label="Dashboard"
           >
-            <FaTachometerAlt className="icon" /> {isOpen && "Dashboard"}
+            <FaTachometerAlt className="icon" /> <span>Dashboard</span>
           </Nav.Link>
           <Nav.Link
             href="/selfrecord"
             className="sidebar-link"
             aria-label="Self Record"
           >
-            <FaFileAlt className="icon" /> {isOpen && "Self Record"}
+            <FaFileAlt className="icon" /> <span>Self Record</span>
           </Nav.Link>
           <Nav.Link href="/book" className="sidebar-link" aria-label="Book">
-            <FaBook className="icon" /> {isOpen && "Book"}
+            <FaBook className="icon" /> <span>Book</span>
           </Nav.Link>
           <Nav.Link
             href="/users"
             className="sidebar-link"
             aria-label="Client Users"
           >
-            <FaUsers className="icon" /> {isOpen && "Client Users"}
+            <FaUsers className="icon" /> <span>Client Users</span>
           </Nav.Link>
           <Nav.Link
             href="/collaborativebook"
             className="sidebar-link"
-            aria-label="Book"
+            aria-label="Collaborative Book"
           >
-            <FaHandshake className="icon" /> {isOpen && "Collaborative Book"}
+            <FaHandshake className="icon" /> <span>Collaborative Book</span>
           </Nav.Link>
-          <Nav.Link href="/loans" className="sidebar-link" aria-label="Book">
-            <FaHandHoldingUsd className="icon" /> {isOpen && "Loans"}
+          <Nav.Link href="/loans" className="sidebar-link" aria-label="Loans">
+            <FaHandHoldingUsd className="icon" /> <span>Loans</span>
           </Nav.Link>
-          <Nav.Link href="/invoice" className="sidebar-link" aria-label="Book">
-            <FaReceipt className="icon" /> {isOpen && "Invoice"}
+          <Nav.Link
+            href="/invoice"
+            className="sidebar-link"
+            aria-label="Invoice"
+          >
+            <FaReceipt className="icon" /> <span>Invoice</span>
           </Nav.Link>
 
           {isLoggedIn && (
@@ -91,7 +81,7 @@ const Sidebar = () => {
               className="sidebar-link"
               aria-label="Your Profile"
             >
-              <FaIdCard className="icon" /> {isOpen && "Your Profile"}
+              <FaIdCard className="icon" /> <span>Your Profile</span>
             </Nav.Link>
           )}
         </Nav>
@@ -99,11 +89,11 @@ const Sidebar = () => {
         <Nav className="mt-auto">
           {isLoggedIn ? (
             <Button variant="outline-light" onClick={handleLogout}>
-              <FaSignOutAlt className="icon" /> {isOpen && "Logout"}
+              <FaSignOutAlt className="icon" /> <span>Logout</span>
             </Button>
           ) : (
             <Button variant="outline-light" onClick={() => navigate("/login")}>
-              <FaSignInAlt className="icon" /> {isOpen && "Login"}
+              <FaSignInAlt className="icon" /> <span>Login</span>
             </Button>
           )}
         </Nav>

@@ -17,7 +17,7 @@ const ProfileUpdate = ({ onClose }) => {
     const token = localStorage.getItem("token");
     if (!token) {
       toast.warn("Please log in to access your profile");
-      navigate("/login");  // Redirect to login if not authenticated
+      navigate("/login"); // Redirect to login if not authenticated
     }
   }, [navigate]);
 
@@ -34,7 +34,7 @@ const ProfileUpdate = ({ onClose }) => {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5100/api/v1/auth/update-profile/${userId}`,
+        `${process.env.REACT_APP_URL}/api/v1/auth/update-profile/${userId}`,
         formData,
         {
           headers: {

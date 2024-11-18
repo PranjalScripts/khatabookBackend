@@ -33,8 +33,9 @@ const Header = () => {
   });
 
   const API_BOOKS_URL =
-    "http://localhost:5100/api/v2/transactionBooks/getAll-books";
-  const API_CLIENTS_URL = "http://localhost:5100/api/v3/client/getAll-clients";
+   `${process.env.REACT_APP_URL}/api/v2/transactionBooks/getAll-books`;
+  const API_CLIENTS_URL =
+    `${process.env.REACT_APP_URL}/api/v3/client/getAll-clients`;
   const isFetched = useRef(false); // Prevent multiple API calls
 
   // Fetch books count
@@ -98,10 +99,11 @@ const Header = () => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
   return (
-    <div className="d-flex">
+    <div className="d-flex" style={{ "padding-left": "8rem" }}>
       <div className="container mt-4">
         <div
           className="chart-container"

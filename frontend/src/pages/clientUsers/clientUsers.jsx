@@ -10,7 +10,7 @@ const ClientUsers = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
-  const API_URL = "http://localhost:5100/api/v3/client";
+  const API_URL = `${process.env.REACT_APP_URL}/api/v3/client`;
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const phoneRegex =
@@ -37,31 +37,31 @@ const ClientUsers = () => {
   };
 
   // Create a new client user
-const createUser = async () => {
-  if (!validateInputs()) {
-    return;
-  }
-
-  try {
-    const response = await axios.post(`${API_URL}/create-client`, newUser, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
-
-    // Add the new user to the users state without refreshing
-    setUsers((prevUsers) => [...prevUsers, response.data.data]);
-
-    // Clear the form fields
-    setNewUser({ name: "", email: "", mobile: "" });
-    toast.success("User created successfully!");
-  } catch (error) {
-    if (error.response && error.response.status === 400) {
-      toast.error(error.response.data.message || "Error creating user");
-    } else {
-      toast.error("An unexpected error occurred");
+  const createUser = async () => {
+    if (!validateInputs()) {
+      return;
     }
-    console.error("Error creating user:", error);
-  }
-};
+
+    try {
+      const response = await axios.post(`${API_URL}/create-client`, newUser, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+
+      // Add the new user to the users state without refreshing
+      setUsers((prevUsers) => [...prevUsers, response.data.data]);
+
+      // Clear the form fields
+      setNewUser({ name: "", email: "", mobile: "" });
+      toast.success("User created successfully!");
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.message || "Error creating user");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+      console.error("Error creating user:", error);
+    }
+  };
 
   // Fetch all client users
   const fetchUsers = async () => {
@@ -141,7 +141,7 @@ const createUser = async () => {
   }, []);
 
   return (
-    <div className="d-flex">
+    <div className="d-flex" style={{ "padding-left": "8rem" }}>
       <Sidebar />
       <div className="container-fluid p-4">
         <h1 className="mb-4">Your All Users</h1>
@@ -186,7 +186,6 @@ const createUser = async () => {
               onClick={() => {
                 createUser();
                 fetchUsers();
-             
               }}
             >
               Add User

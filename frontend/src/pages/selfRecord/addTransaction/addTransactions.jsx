@@ -26,7 +26,7 @@ const  AddTransactions = () => {
   useEffect(() => {
     // Fetch clients
     axiosInstance
-      .get("http://localhost:5100/api/v3/client/getAll-clients")
+      .get(`${process.env.REACT_APP_URL}/api/v3/client/getAll-clients`)
       .then((response) => {
         if (
           response.data &&
@@ -45,7 +45,7 @@ const  AddTransactions = () => {
 
     // Fetch books
     axiosInstance
-      .get("http://localhost:5100/api/v2/transactionBooks/getAll-books")
+      .get(`${process.env.REACT_APP_URL}/api/v2/transactionBooks/getAll-books`)
       .then((response) => {
         // Ensure we're accessing the `books` array in the response
         if (Array.isArray(response.data.books)) {
@@ -59,6 +59,7 @@ const  AddTransactions = () => {
         }
       })
       .catch((error) => console.error("Error fetching books:", error));
+    // eslint-disable-next-line
   }, []);
 
   const handleChange = (e) => {
@@ -74,7 +75,7 @@ const  AddTransactions = () => {
     e.preventDefault();
     axiosInstance
       .post(
-        "http://localhost:5100/api/v4/transaction/create-transaction",
+        `${process.env.REACT_APP_URL}/api/v4/transaction/create-transaction`,
         transactionData
       )
       .then((response) => {

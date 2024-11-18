@@ -17,7 +17,6 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     if (!emailRegex.test(identifier) && !phoneRegex.test(identifier)) {
       toast.warn("Please enter a valid email or 10-digit phone number.");
       return;
@@ -29,15 +28,15 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5100/api/v1/auth/login",
+        `${process.env.REACT_APP_URL}/api/v1/auth/login`,
         loginPayload
       );
       console.log("response", response);
       const { user, token } = response.data;
       login(user); // Pass the user data to context for login
       localStorage.setItem("token", token);
-      console.log("user id",user.id);
-      localStorage.setItem("userId",user.id) 
+      console.log("user id", user.id);
+      localStorage.setItem("userId", user.id);
       toast.success("Login successful");
       navigate("/dashboard");
     } catch (error) {
@@ -46,9 +45,17 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh", backgroundColor: "#f8f9fa" }}>
-      <div className="card p-4 shadow-lg rounded" style={{ maxWidth: "400px", width: "100%", borderColor: "#ced4da" }}>
-        <h2 className="text-center mb-4" style={{ color: "#495057" }}>Login</h2>
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: "100vh", backgroundColor: "#f8f9fa" }}
+    >
+      <div
+        className="card p-4 shadow-lg rounded"
+        style={{ maxWidth: "400px", width: "100%", borderColor: "#ced4da" }}
+      >
+        <h2 className="text-center mb-4" style={{ color: "#495057" }}>
+          Login
+        </h2>
         <form onSubmit={handleLogin}>
           <div className="mb-3">
             <label className="form-label">Email or Phone</label>
@@ -79,18 +86,26 @@ const Login = () => {
                 right: "10px",
                 transform: "translateY(-50%)",
                 color: "#6c757d",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
               onClick={() => setShowPassword(!showPassword)} // Toggle visibility
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Toggle between eye and eye-slash icons */}
+              {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
+              {/* Toggle between eye and eye-slash icons */}
             </button>
           </div>
           <button type="submit" className="btn btn-primary w-100">
             Login
           </button>
           <p className="text-center mt-3">
-            Don’t have an account? <a href="/signup" className="text-decoration-none" style={{ color: "#0d6efd" }}>Signup here</a>
+            Don’t have an account?{" "}
+            <a
+              href="/signup"
+              className="text-decoration-none"
+              style={{ color: "#0d6efd" }}
+            >
+              Signup here
+            </a>
           </p>
         </form>
       </div>

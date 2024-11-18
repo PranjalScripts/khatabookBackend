@@ -27,7 +27,7 @@ const BookPage = () => {
   const fetchBooks = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5100/api/v2/transactionBooks/getAll-books",
+        `${process.env.REACT_APP_URL}/api/v2/transactionBooks/getAll-books`,
         {
           headers: {
             Authorization: `Bearer ${getAuthToken()}`,
@@ -44,7 +44,7 @@ const BookPage = () => {
   const handleCreateBook = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5100/api/v2/transactionBooks/create-books",
+        `${process.env.REACT_APP_URL}/api/v2/transactionBooks/create-books`,
         { bookname: bookName },
         {
           headers: {
@@ -64,7 +64,7 @@ const BookPage = () => {
   const handleUpdateBook = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5100/api/v2/transactionBooks/update-book/${editingBook._id}`,
+        `${process.env.REACT_APP_URL}/api/v2/transactionBooks/update-book/${editingBook._id}`,
         { bookname: bookName },
         {
           headers: {
@@ -89,7 +89,7 @@ const BookPage = () => {
   const handleDeleteBook = async (bookId) => {
     try {
       await axios.delete(
-        `http://localhost:5100/api/v2/transactionBooks/delete-book/${bookId}`,
+        `${process.env.REACT_APP_URL}/api/v2/transactionBooks/delete-book/${bookId}`,
         {
           headers: {
             Authorization: `Bearer ${getAuthToken()}`,
@@ -121,7 +121,7 @@ const BookPage = () => {
   const totalPages = Math.ceil(filteredBooks.length / pageSize);
 
   return (
-    <div className="d-flex">
+    <div className="d-flex" style={{ "padding-left": "8rem" }}>
       <Sidebar />
       <div className="container my-4">
         <h2 className="text-center mb-4">Manage Books</h2>

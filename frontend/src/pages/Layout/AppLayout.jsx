@@ -18,7 +18,7 @@ const AppLayout = () => {
   };
 
   return (
-    <div className="d-flex">
+    <div className="d-flex" style={{ "padding-left": "8rem" }}>
       <Sidebar
         username={username}
         isLoggedIn={isLoggedIn}

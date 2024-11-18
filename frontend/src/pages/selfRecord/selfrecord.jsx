@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../Layout/sidebar";
 import axios from "axios";
- import AddTransactions from "./addTransaction/addTransactions"
+import AddTransactions from "./addTransaction/addTransactions";
 import "./selfRecord.css";
 const SelfRecord = () => {
   const [transactions, setTransactions] = useState([]);
@@ -14,21 +14,19 @@ const SelfRecord = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:5100/api/v4/transaction/get-transactions/${userId}`,
+          `${process.env.REACT_APP_URL}/api/v4/transaction/get-transactions/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-           
           }
         );
-  
- 
+
         if (response.data.success) {
           const transactionData = await Promise.all(
             response.data.data.map(async (transaction) => {
               const bookResponse = await axios.get(
-                `http://localhost:5100/api/v2/transactionBooks/get-book/${transaction.bookId}`,
+                `${process.env.REACT_APP_URL}/api/v2/transactionBooks/get-book/${transaction.bookId}`,
                 {
                   headers: {
                     Authorization: `Bearer ${token}`,
@@ -37,7 +35,7 @@ const SelfRecord = () => {
               );
 
               const clientResponse = await axios.get(
-                `http://localhost:5100/api/v3/client/get-client/${transaction.clientUserId}`,
+                `${process.env.REACT_APP_URL}/api/v3/client/get-client/${transaction.clientUserId}`,
                 {
                   headers: {
                     Authorization: `Bearer ${token}`,
@@ -69,6 +67,7 @@ const SelfRecord = () => {
     };
 
     fetchTransactions();
+    // eslint-disable-next-line
   }, []);
 
   const handleAddTransactionClick = () => {
@@ -86,10 +85,10 @@ const SelfRecord = () => {
   };
 
   return (
-    <div className="d-flex">
+    <div className="d-flex" style={{ "padding-left": "8rem" }}>
       <Sidebar />
       <div className="container">
-        <h1>Self Record Page</h1>
+        <h1> Transactions Record Page</h1>
         <button
           onClick={handleAddTransactionClick}
           className="btn btn-primary mb-3"

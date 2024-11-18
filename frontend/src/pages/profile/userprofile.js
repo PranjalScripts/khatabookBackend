@@ -5,7 +5,7 @@ import Sidebar from "../Layout/sidebar";
 import ProfileUpdate from "../../components/auth/ProfileUpdate/prorfileupdate";
 import { toast } from "react-toastify";
 
-  const GetUserProfile = () => {
+const GetUserProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -23,7 +23,7 @@ import { toast } from "react-toastify";
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5100/api/v1/auth/get-profile",
+          `${process.env.REACT_APP_URL}/api/v1/auth/get-profile`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ import { toast } from "react-toastify";
   }
 
   return (
-    <div className="d-flex">
+    <div className="d-flex" style={{ "padding-left": "8rem" }}>
       <Sidebar />
       <div className="container mt-5">
         <h2 className="text-center mb-4">User Profile</h2>
