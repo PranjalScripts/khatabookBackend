@@ -31,7 +31,6 @@ function App() {
         <Route path="/invoice" element={<Invoice />} />
         <Route path="/collaborativebook" element={<CollaborativeBook/>} />
       </Routes>
-
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </Router>
   );

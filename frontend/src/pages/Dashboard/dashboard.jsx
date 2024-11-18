@@ -12,8 +12,15 @@ import axios from "axios";
 import Sidebar from "../Layout/sidebar";
 import { toast } from "react-toastify";
 import Header from "./Header";
+
 // Register Chart.js components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+
+// Cache object to store API responses
+const cache = {
+  books: { data: null, expiry: null },
+  clients: { data: null, expiry: null },
+};
 
 const Dashboard = () => {
   const [bookData, setBookData] = useState({
@@ -35,8 +42,8 @@ const Dashboard = () => {
       {
         label: "Clients Created",
         data: [],
-        backgroundColor: "rgb(100, 220, 140)",
-        borderColor: "rrgb(49, 81, 30)",
+        backgroundColor: "rgb(106,170,125)",
+        borderColor: "rgb(49, 81, 30)",
         borderWidth: 1,
       },
     ],
@@ -45,16 +52,40 @@ const Dashboard = () => {
   const API_BOOKS_URL =
     "http://localhost:5100/api/v2/transactionBooks/getAll-books";
   const API_CLIENTS_URL = "http://localhost:5100/api/v3/client/getAll-clients";
-  const isFetched = useRef(false); // Prevent multiple API calls
+  const isFetched = useRef(false); // Prevent multiple API calls on the same render
 
+  // Helper function to group data by date in ISO format
+  const groupByDate = (items, dateKey) => {
+    const grouped = {};
+    items.forEach((item) => {
+      const isoDate = new Date(item[dateKey]).toISOString().split("T")[0]; // Get ISO date (YYYY-MM-DD)
+      grouped[isoDate] = (grouped[isoDate] || 0) + 1;
+    });
+    return grouped;
+  };
+
+  // Fetch books with caching
   const fetchBooks = async () => {
+    const now = Date.now();
+    if (cache.books.data && cache.books.expiry > now) {
+      return cache.books.data;
+    }
+
     try {
       const booksResponse = await axios.get(API_BOOKS_URL, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
       const books = booksResponse.data?.books || [];
-      return groupByDate(books, "createdAt");
+      const groupedBooks = groupByDate(books, "createdAt");
+
+      // Cache the result with 5-minute expiry
+      cache.books = {
+        data: groupedBooks,
+        expiry: now + 5 * 60 * 1000, // 5 minutes in milliseconds
+      };
+
+      return groupedBooks;
     } catch (error) {
       toast.error("Error fetching books");
       console.error("Error fetching books:", error);
@@ -62,14 +93,28 @@ const Dashboard = () => {
     }
   };
 
+  // Fetch clients with caching
   const fetchClients = async () => {
+    const now = Date.now();
+    if (cache.clients.data && cache.clients.expiry > now) {
+      return cache.clients.data;
+    }
+
     try {
       const clientsResponse = await axios.get(API_CLIENTS_URL, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
       const clients = clientsResponse.data?.data || [];
-      return groupByDate(clients, "createdAt");
+      const groupedClients = groupByDate(clients, "createdAt");
+
+      // Cache the result with 5-minute expiry
+      cache.clients = {
+        data: groupedClients,
+        expiry: now + 5 * 60 * 1000, // 5 minutes in milliseconds
+      };
+
+      return groupedClients;
     } catch (error) {
       toast.error("Error fetching clients");
       console.error("Error fetching clients:", error);
@@ -77,19 +122,7 @@ const Dashboard = () => {
     }
   };
 
-  // Helper function to group data by date
-  const groupByDate = (items, dateKey) => {
-    const grouped = {};
-    items.forEach((item) => {
-      const date = new Date(item[dateKey]).toLocaleDateString();
-      if (!grouped[date]) {
-        grouped[date] = 0;
-      }
-      grouped[date] += 1;
-    });
-    return grouped;
-  };
-
+  // Fetch and update chart data
   const fetchData = async () => {
     if (isFetched.current) return;
     isFetched.current = true;
@@ -98,24 +131,27 @@ const Dashboard = () => {
       const booksByDate = await fetchBooks();
       const clientsByDate = await fetchClients();
 
+      const sortedBookDates = Object.keys(booksByDate).sort();
+      const sortedClientDates = Object.keys(clientsByDate).sort();
+
       setBookData((prevState) => ({
         ...prevState,
-        labels: Object.keys(booksByDate),
+        labels: sortedBookDates,
         datasets: [
           {
             ...prevState.datasets[0],
-            data: Object.values(booksByDate),
+            data: sortedBookDates.map((date) => booksByDate[date] || 0),
           },
         ],
       }));
 
       setClientData((prevState) => ({
         ...prevState,
-        labels: Object.keys(clientsByDate),
+        labels: sortedClientDates,
         datasets: [
           {
             ...prevState.datasets[0],
-            data: Object.values(clientsByDate),
+            data: sortedClientDates.map((date) => clientsByDate[date] || 0),
           },
         ],
       }));

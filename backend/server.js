@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const colors = require("colors");
 const userRoutes =require("./routes/userRoutes/userRoutes")
 const connectDb = require("./config/connectDb");
- 
+ const transactionsRouter = require("./routes/collaborativeBookRoute/collaborativeBookRoute"); // Import the transactions router
 const transactionRoutes = require("./routes/transactionRoutes/transactionRoutes");
 const bookRoutes = require("./routes/bookRoute/bookRoutes");
 const clientUserRoutes = require("./routes/clientUserRoutes/clientUserRoutes");
@@ -33,7 +33,9 @@ app.use("/api/v2/transactionBooks", bookRoutes);
 app.use("/api/v3/client", clientUserRoutes);
 //api for transaction books
 app.use("/api/v4/transaction", transactionRoutes);
- 
+//api for collaborative books
+ app.use("/api", transactionsRouter); // Prefix the router with `/api`
+
  
  
 app.get("/", (req, res) => { res.send("<h1> Welcome to the Expense Management API</h1>") });

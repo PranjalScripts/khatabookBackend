@@ -19,8 +19,9 @@ const authenticate = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     req.userId = decoded.id; // Set userId on the request
-    console.log("Decoded userId in middleware:",decoded.id); // Debug log
+   req.userEmail = decoded.email; // Set userEmail on the request
     console.log("Decoded user in middleware:", decoded); // Debug log
+    console.log("email in middleware:", req.userEmail); // Debug log
     
     next();
   } catch (error) {
