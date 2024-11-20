@@ -167,7 +167,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="d-flex" style={{ "padding-left": "8rem" }}>
+    <div className="d-flex" style={{ "padding-left": "0" }}>
       <Sidebar />
       <div className="container mt-4 ">
         <div

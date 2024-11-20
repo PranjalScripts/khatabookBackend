@@ -46,7 +46,7 @@ const GetUserProfile = () => {
   }
 
   return (
-    <div className="d-flex" style={{ "padding-left": "8rem" }}>
+    <div className="d-flex" style={{ "padding-left": "0" }}>
       <Sidebar />
       <div className="container mt-5">
         <h2 className="text-center mb-4">User Profile</h2>
