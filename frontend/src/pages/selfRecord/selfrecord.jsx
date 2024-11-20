@@ -53,6 +53,7 @@ const SelfRecord = () => {
                 bookName: bookResponse.data.book.bookname,
                 clientName: clientResponse.data.data.name,
                 clientMobile: clientResponse.data.data.mobile,
+                clientEmail: clientResponse.data.data.email,
                 outstandingBalance: lastTransaction,
               };
             })
@@ -114,6 +115,7 @@ const SelfRecord = () => {
                 <th>Book Name</th>
                 <th>Client Name</th>
                 <th>Client Mobile</th>
+                <th>Client Email</th>
                 <th>Outstanding Balance</th>
                 <th>Reminder</th>
                 <th>Details</th>
@@ -126,6 +128,8 @@ const SelfRecord = () => {
                     <td>{transaction.bookName}</td>
                     <td>{transaction.clientName}</td>
                     <td>{transaction.clientMobile}</td>
+                    <td>{transaction.clientEmail}</td>
+
                     <td>{formatAmount(transaction.outstandingBalance)}</td>
                     <td>
                       <a
