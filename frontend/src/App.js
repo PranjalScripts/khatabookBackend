@@ -15,6 +15,7 @@ import Landing from './components/LandingPage/Landing';
 import Loans from './pages/loans/loan';
 import Invoice from './pages/invoice/invoice';
 import CollaborativeBook from './pages/collaborativeBook/collaborativeBook';
+import TransactionHistory from './pages/transactionHIstory/TransactionHistory';
 function App() {
   return (
     <Router>
@@ -29,7 +30,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/loans" element={<Loans />} />
         <Route path="/invoice" element={<Invoice />} />
-        <Route path="/collaborativebook" element={<CollaborativeBook/>} />
+        <Route path="/collaborativebook" element={<CollaborativeBook />} />
+        <Route path="/transaction-history/:transactionId" element={<TransactionHistory />}/>
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </Router>

@@ -20,6 +20,8 @@ function Landing() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
   const { login } = useAuth();
 
   const handleLoginClick = () => {
@@ -61,47 +63,68 @@ function Landing() {
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       {/* Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-        <div className="container">
-          <a className="navbar-brand d-flex align-items-center" href="#">
+      <nav className="bg-white shadow-sm fixed top-0 left-0 w-full z-10">
+        <div className="container mx-auto px-4 flex items-center justify-between h-16">
+          <a href="#" className="flex items-center">
             <img
               src="https://i.ibb.co/bdhQrFG/pizeonflyfull.png"
               alt="pizeonflyfull"
-              height="35px"
+              className="h-9"
             />
           </a>
           <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+            className="lg:hidden text-gray-500 focus:outline-none"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <span className="navbar-toggler-icon"></span>
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link" href="#features">
+          <div
+            className={`lg:flex items-center space-x-6 ${
+              isMenuOpen ? "block" : "hidden"
+            }`}
+          >
+            <ul className="flex flex-col lg:flex-row items-center lg:space-x-6">
+              <li>
+                <a
+                  href="#features"
+                  className="block px-4 py-2 text-gray-700 hover:text-blue-500"
+                >
                   Features
                 </a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#pricing">
+              <li>
+                <a
+                  href="#pricing"
+                  className="block px-4 py-2 text-gray-700 hover:text-blue-500"
+                >
                   Pricing
                 </a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#testimonials">
+              <li>
+                <a
+                  href="#testimonials"
+                  className="block px-4 py-2 text-gray-700 hover:text-blue-500"
+                >
                   Testimonials
                 </a>
               </li>
-              <li className="nav-item ms-3">
+              <li className="mt-3 lg:mt-0">
                 <button
                   onClick={() => setShowLoginModal(true)}
-                  className="btn btn-outline-primary"
+                  className="px-4 py-2 text-sm font-medium text-blue-500 border border-blue-500 rounded hover:bg-blue-500 hover:text-white transition"
                 >
                   Login
                 </button>

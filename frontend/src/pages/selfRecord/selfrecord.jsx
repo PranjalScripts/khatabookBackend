@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../Layout/sidebar";
 import axios from "axios";
 import AddTransactions from "./addTransaction/addTransactions";
 import "./selfRecord.css";
+
 const SelfRecord = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAddTransaction, setShowAddTransaction] = useState(false); // New state to control modal visibility
+  const [showAddTransaction, setShowAddTransaction] = useState(false); // Modal visibility state
   const userId = localStorage.getItem("userId");
-  console.log(userId);
+  const navigate = useNavigate(); // For navigation
+
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -46,6 +49,7 @@ const SelfRecord = () => {
               const lastTransaction = transaction.outstandingBalance;
 
               return {
+                transactionId: transaction._id, // Add transaction ID for details
                 bookName: bookResponse.data.book.bookname,
                 clientName: clientResponse.data.data.name,
                 clientMobile: clientResponse.data.data.mobile,
@@ -67,8 +71,7 @@ const SelfRecord = () => {
     };
 
     fetchTransactions();
-    // eslint-disable-next-line
-  }, []);
+  }, [userId]);
 
   const handleAddTransactionClick = () => {
     setShowAddTransaction(true);
@@ -84,11 +87,18 @@ const SelfRecord = () => {
     return <span style={{ color }}>{absoluteAmount}</span>;
   };
 
+  const handleSeeDetails = (transactionId) => {
+    // Redirect to Transaction History page with transaction ID
+    console.log("Navigating to Transaction ID:", transactionId); // Debug log
+
+    navigate(`/transaction-history/${transactionId}`);
+  };
+
   return (
-    <div className="d-flex" style={{ "padding-left": "0" }}>
+    <div className="d-flex" style={{ paddingLeft: "0" }}>
       <Sidebar />
       <div className="container">
-        <h1> Transactions Record Page</h1>
+        <h1>Transactions Record Page</h1>
         <button
           onClick={handleAddTransactionClick}
           className="btn btn-primary mb-3"
@@ -106,6 +116,7 @@ const SelfRecord = () => {
                 <th>Client Mobile</th>
                 <th>Outstanding Balance</th>
                 <th>Reminder</th>
+                <th>Details</th>
               </tr>
             </thead>
             <tbody>
@@ -126,18 +137,23 @@ const SelfRecord = () => {
                           className="fab fa-whatsapp"
                           style={{ color: "#25D366", fontSize: "1.5em" }}
                         ></i>
-                        <img
-                          src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png"
-                          alt="WhatsApp"
-                          style={{ width: "24px", height: "24px" }}
-                        />
                       </a>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-info"
+                        onClick={() =>
+                          handleSeeDetails(transaction.transactionId)
+                        }
+                      >
+                        See Details
+                      </button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5">No transactions found</td>
+                  <td colSpan="6">No transactions found</td>
                 </tr>
               )}
             </tbody>
