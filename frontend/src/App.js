@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
- 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Import Router and Routes
@@ -15,9 +14,11 @@ import Landing from './components/LandingPage/Landing';
 import Loans from './pages/loans/loan';
 import Invoice from './pages/invoice/invoice';
 import CollaborativeBook from './pages/collaborativeBook/collaborativeBook';
+
 function App() {
   return (
     <Router>
+
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />

@@ -120,6 +120,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import Header from "./Header";
 
 const Sidebar = () => {
   const { isLoggedIn, logout } = useAuth() || {}; // Ensure safe destructuring
@@ -131,105 +132,111 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-white-500 shadow-lg text-black h-screen w-64 flex flex-col">
-      {/* Logo Section */}
-      <div className="text-xl font-bold p-4">
-       <span><FaBook className="inline mr-2" />
-        BankDash.</span>
-      </div>
+    // <div className="flex flex-row gap-2 mb-10">
+      
+      <div className="bg-white-500 shadow-lg text-black h-screen w-64 flex flex-col">
+        {/* Logo Section */}
+        <div className="text-xl font-bold p-4">
+          <span><FaBook className="inline mr-2" />
+            ApnaBook</span>
+        </div>
 
-      {/* Navigation Links */}
-      <nav className="flex-1 mt-1">
-        <ul>
-          <li className="hover:bg-gray-200">
-            <a
-              href="/dashboard"
-              className="flex items-center px-4 py-3 space-x-4"
-            >
-              <FaTachometerAlt />
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li className="hover:bg-gray-200">
-            <a
-              href="/selfrecord"
-              className="flex items-center px-4 py-3 space-x-4"
-            >
-              <FaFileAlt />
-              <span>Self Record</span>
-            </a>
-          </li>
-          <li className="hover:bg-gray-200">
-            <a href="/book" className="flex items-center px-4 py-3 space-x-4">
-              <FaBook />
-              <span>Book</span>
-            </a>
-          </li>
-          <li className="hover:bg-gray-200">
-            <a href="/users" className="flex items-center px-4 py-3 space-x-4">
-              <FaUsers />
-              <span>Client Users</span>
-            </a>
-          </li>
-          <li className="hover:bg-gray-200">
-            <a
-              href="/collaborativebook"
-              className="flex items-center px-4 py-3 space-x-4"
-            >
-              <FaHandshake />
-              <span>Collaborative Book</span>
-            </a>
-          </li>
-          <li className="hover:bg-gray-200">
-            <a href="/loans" className="flex items-center px-4 py-3 space-x-4">
-              <FaHandHoldingUsd />
-              <span>Loans</span>
-            </a>
-          </li>
-          <li className="hover:bg-gray-200">
-            <a
-              href="/invoice"
-              className="flex items-center px-4 py-3 space-x-4"
-            >
-              <FaReceipt />
-              <span>Invoice</span>
-            </a>
-          </li>
-          {isLoggedIn && (
+        {/* Navigation Links */}
+        <nav className="flex-1 mt-1">
+          <ul>
             <li className="hover:bg-gray-200">
               <a
-                href="/profile"
+                href="/dashboard"
                 className="flex items-center px-4 py-3 space-x-4"
               >
-                <FaIdCard />
-                <span>Your Profile</span>
+                <FaTachometerAlt />
+                <span>Dashboard</span>
               </a>
             </li>
-          )}
-        </ul>
-      </nav>
+            <li className="hover:bg-gray-200">
+              <a
+                href="/selfrecord"
+                className="flex items-center px-4 py-3 space-x-4"
+              >
+                <FaFileAlt />
+                <span>Self Record</span>
+              </a>
+            </li>
+            <li className="hover:bg-gray-200">
+              <a href="/book" className="flex items-center px-4 py-3 space-x-4">
+                <FaBook />
+                <span>Book</span>
+              </a>
+            </li>
+            <li className="hover:bg-gray-200">
+              <a href="/users" className="flex items-center px-4 py-3 space-x-4">
+                <FaUsers />
+                <span>Client Users</span>
+              </a>
+            </li>
+            <li className="hover:bg-gray-200">
+              <a
+                href="/collaborativebook"
+                className="flex items-center px-4 py-3 space-x-4"
+              >
+                <FaHandshake />
+                <span>Collaborative Book</span>
+              </a>
+            </li>
+            <li className="hover:bg-gray-200">
+              <a href="/loans" className="flex items-center px-4 py-3 space-x-4">
+                <FaHandHoldingUsd />
+                <span>Loans</span>
+              </a>
+            </li>
+            <li className="hover:bg-gray-200">
+              <a
+                href="/invoice"
+                className="flex items-center px-4 py-3 space-x-4"
+              >
+                <FaReceipt />
+                <span>Invoice</span>
+              </a>
+            </li>
+            {isLoggedIn && (
+              <li className="hover:bg-gray-200">
+                <a
+                  href="/profile"
+                  className="flex items-center px-4 py-3 space-x-4"
+                >
+                  <FaIdCard />
+                  <span>Your Profile</span>
+                </a>
+              </li>
+            )}
+          </ul>
+        </nav>
 
-      {/* Footer Section */}
-      <div className="p-4 border-t border-blue-800">
-        {isLoggedIn ? (
-          <button
-            onClick={handleLogout}
-            className="flex items-center w-full px-4 py-3 space-x-4 bg-blue-800 hover:bg-blue-700 rounded-md"
-          >
-            <FaSignOutAlt />
-            <span>Logout</span>
-          </button>
-        ) : (
-          <button
-            onClick={() => navigate("/")}
-            className="flex items-center w-full px-4 py-3 space-x-4 bg-blue-800 hover:bg-blue-700 rounded-md"
-          >
-            <FaSignInAlt />
-            <span>Login</span>
-          </button>
-        )}
+        {/* Footer Section */}
+        <div className="p-4 border-t border-blue-800">
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="flex items-center w-full px-4 py-3 space-x-4 bg-blue-800 hover:bg-blue-700 rounded-md"
+            >
+              <FaSignOutAlt />
+              <span>Logout</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate("/")}
+              className="flex items-center w-full px-4 py-3 space-x-4 bg-blue-800 hover:bg-blue-700 rounded-md"
+            >
+              <FaSignInAlt />
+              <span>Login</span>
+            </button>
+          )}
+        </div>
       </div>
-    </div>
+    //   <div className="w-[1080px] mb-8">
+    //   <Header />
+    //   </div>
+    // </div>
   );
 };
 
