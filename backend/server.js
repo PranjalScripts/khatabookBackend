@@ -40,15 +40,16 @@ app.use("/api/v4/transaction", transactionRoutes);
  
 app.get("/", (req, res) => { res.send("<h1> Welcome to the Expense Management API</h1>") });
 
-//routes
+//routes  
 //merchant routes
 
 //port
 const PORT = 5100 || process.env.PORT;
 
+
+
 //listen server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`.bgYellow);
 });
-
  
