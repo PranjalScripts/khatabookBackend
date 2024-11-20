@@ -121,7 +121,7 @@ const BookPage = () => {
   const totalPages = Math.ceil(filteredBooks.length / pageSize);
 
   return (
-    <div className="d-flex" style={{ "padding-left": "8rem" }}>
+    <div className="d-flex" style={{ "padding-left": "0" }}>
       <Sidebar />
       <div className="container my-4">
         <h2 className="text-center mb-4">Manage Books</h2>

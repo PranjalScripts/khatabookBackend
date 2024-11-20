@@ -61,7 +61,7 @@ const CollaborativeBook = () => {
     );
 
   return (
-    <div className="d-flex" style={{ "padding-left": "8rem" }}>
+    <div className="d-flex" style={{ "padding-left": "0" }}>
       <Sidebar />
       <div className="container mt-4">
         <h2 className="mb-4">Your Collabbed Transactions</h2>

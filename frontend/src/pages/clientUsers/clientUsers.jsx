@@ -141,7 +141,7 @@ const ClientUsers = () => {
   }, []);
 
   return (
-    <div className="d-flex" style={{ "padding-left": "8rem" }}>
+    <div className="d-flex" style={{ "padding-left": "0" }}>
       <Sidebar />
       <div className="container-fluid p-4">
         <h1 className="mb-4">Your All Users</h1>

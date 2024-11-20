@@ -10,11 +10,10 @@ import {
   ChevronRight,
   Receipt,
   PieChart,
- 
 } from "lucide-react";
 import "./Landing.css";
-import { useAuth } from "../../context/AuthContext"; 
-import {FaEyeSlash, FaEye} from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 function Landing() {
   const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -23,7 +22,6 @@ function Landing() {
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
 
- 
   const handleLoginClick = () => {
     setShowLoginModal(true); // Trigger the modal to show
   };

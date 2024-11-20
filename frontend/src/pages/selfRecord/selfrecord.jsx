@@ -85,7 +85,7 @@ const SelfRecord = () => {
   };
 
   return (
-    <div className="d-flex" style={{ "padding-left": "8rem" }}>
+    <div className="d-flex" style={{ "padding-left": "0" }}>
       <Sidebar />
       <div className="container">
         <h1> Transactions Record Page</h1>
