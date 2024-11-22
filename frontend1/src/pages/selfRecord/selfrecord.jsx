@@ -53,7 +53,6 @@ const SelfRecord = () => {
                 bookName: bookResponse.data.book.bookname,
                 clientName: clientResponse.data.data.name,
                 clientMobile: clientResponse.data.data.mobile,
-                clientEmail: clientResponse.data.data.email,
                 outstandingBalance: lastTransaction,
               };
             })
@@ -90,8 +89,6 @@ const SelfRecord = () => {
 
   const handleSeeDetails = (transactionId) => {
     // Redirect to Transaction History page with transaction ID
-    console.log("Navigating to Transaction ID:", transactionId); // Debug log
-
     navigate(`/transaction-history/${transactionId}`);
   };
 
@@ -115,7 +112,6 @@ const SelfRecord = () => {
                 <th>Book Name</th>
                 <th>Client Name</th>
                 <th>Client Mobile</th>
-                <th>Client Email</th>
                 <th>Outstanding Balance</th>
                 <th>Reminder</th>
                 <th>Details</th>
@@ -128,8 +124,6 @@ const SelfRecord = () => {
                     <td>{transaction.bookName}</td>
                     <td>{transaction.clientName}</td>
                     <td>{transaction.clientMobile}</td>
-                    <td>{transaction.clientEmail}</td>
-
                     <td>{formatAmount(transaction.outstandingBalance)}</td>
                     <td>
                       <a
@@ -141,6 +135,11 @@ const SelfRecord = () => {
                           className="fab fa-whatsapp"
                           style={{ color: "#25D366", fontSize: "1.5em" }}
                         ></i>
+                          <img
+                         src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png"
+                         alt="WhatsApp"
+                        style={{ width: "24px", height: "24px" }}
+                         />
                       </a>
                     </td>
                     <td>

@@ -14,10 +14,12 @@ import Landing from './components/LandingPage/Landing';
 import Loans from './pages/loans/loan';
 import Invoice from './pages/invoice/invoice';
 import CollaborativeBook from './pages/collaborativeBook/collaborativeBook';
-function App() {
+import PageNotFound from './pages/PageNotFound/PageNotFound';
+import TransactionHistory from './pages/transactionHIstory/TransactionHistory';
+import CollaborativeBookRecords from './pages/collaborativeBook/collaborativebookRecords/CollaborativeBookRecords'
+ function App() {
   return (
     <Router>
-
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
@@ -30,9 +32,16 @@ function App() {
         <Route path="/loans" element={<Loans />} />
         <Route path="/invoice" element={<Invoice />} />
         <Route path="/collaborativebook" element={<CollaborativeBook />} />
-        <Route path="/transaction-history/:transactionId" element={<TransactionHistory />} />
-        <Route path="/collaborative-book-records/:transactionId" element={<CollaborativeBookRecords />} />
+        <Route
+          path="/collaborative-records/:transactionId"
+          element={<CollaborativeBookRecords />}
+        />
+        <Route
+          path="/transaction-history/:transactionId"
+          element={<TransactionHistory />}
+        />
 
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </Router>

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const TransactionHistory = () => {
-    const { transactionId } = useParams(); // Retrieve transactionId from URL
+    const { transactionId } = useParams();  
     console.log("Transaction ID from URL params:", transactionId);
   const [transactionData, setTransactionData] = useState(null);
   const [loading, setLoading] = useState(true);

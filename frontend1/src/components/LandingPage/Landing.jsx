@@ -414,8 +414,6 @@ function Landing() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
   const { login } = useAuth();
 
   const handleLoginClick = () => {
@@ -456,52 +454,53 @@ function Landing() {
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col">
       {/* Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-        <div className="container">
-          <a className="navbar-brand d-flex align-items-center" href="#">
+      <nav className="bg-white shadow fixed w-full z-10">
+        <div className="container mx-auto flex justify-between items-center py-4">
+          <a href="#" className="flex items-center">
             <img
               src="https://i.ibb.co/bdhQrFG/pizeonflyfull.png"
               alt="pizeonflyfull"
-              height="35px"
+              className="h-8"
             />
           </a>
           <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
+            className="text-gray-700 lg:hidden"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon"></span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link" href="#features">
-                  Features
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#pricing">
-                  Pricing
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#testimonials">
-                  Testimonials
-                </a>
-              </li>
-              <li className="nav-item ms-3">
-                <button
-                  onClick={() => setShowLoginModal(true)}
-                  className="btn btn-outline-primary"
-                >
-                  Login
-                </button>
-              </li>
-            </ul>
+          <div className="hidden lg:flex items-center space-x-6">
+            <a href="#features" className="text-gray-700 hover:text-blue-500">
+              Features
+            </a>
+            <a href="#pricing" className="text-gray-700 hover:text-blue-500">
+              Pricing
+            </a>
+            <a
+              href="#testimonials"
+              className="text-gray-700 hover:text-blue-500"
+            >
+              Testimonials
+            </a>
+            <button
+              onClick={() => setShowLoginModal(true)}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+            >
+              Login
+            </button>
           </div>
         </div>
       </nav>

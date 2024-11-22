@@ -1,20 +1,23 @@
 const Transaction = require("../../models/transactionModel/transactionModel");
 
-exports.createTransaction = async (req, res) => {
+exports.createCollabTransaction = async (req, res) => {
   try {
-    const {
-      bookId,
+    const { bookId, clientUserId, transactionType, amount, description } =
+      req.body;
+    const userId = req.user.id;
+
+    // Check if a transaction already exists for the same user, client, and book
+    let transaction = await Transaction.findOne({
+      userId,
       clientUserId,
-      transactionType,
-      amount,
-      description,
-    } = req.body;
-const userId = req.user.id;
-    // Check if a transaction already exists for the same user and client
-    let transaction = await Transaction.findOne({ userId, clientUserId,bookId});
+      bookId,
+    });
 
     if (transaction) {
-      
+      console.log(
+        `Transaction found for userId: ${userId}, clientUserId: ${clientUserId}, bookId: ${bookId}`
+      );
+
       // Calculate the new outstanding balance based on the transaction type
       let newOutstandingBalance = transaction.outstandingBalance;
 
@@ -47,6 +50,9 @@ const userId = req.user.id;
       });
     }
 
+    // Log to confirm no existing transaction is found for this book
+    console.log(`No existing transaction found for bookId: ${bookId}`);
+
     // If no existing transaction, create a new one
     const newTransaction = new Transaction({
       bookId,
@@ -78,16 +84,17 @@ const userId = req.user.id;
       data: newTransaction,
     });
   } catch (error) {
+    console.error("Error creating transaction:", error);
     res.status(500).json({
       success: false,
-      message: "An error occurred while processing the transaction.",
+      message: "Internal server error",
       error: error.message,
     });
   }
 };
 
 // Get a transaction by ID
-exports.getTransactionById = async (req, res) => {
+exports.getCollabTransactionById = async (req, res) => {
   try {
     const { id } = req.params;
     const transaction = await Transaction.findById(id);
@@ -113,7 +120,7 @@ exports.getTransactionById = async (req, res) => {
 };
 
 // Get all transactions for a specific user
-exports.getTransactions = async (req, res) => {
+exports.getCollabTransactions = async (req, res) => {
   try {
     const { userId } = req.params;
     const transactions = await Transaction.find({ userId });
@@ -139,7 +146,7 @@ exports.getTransactions = async (req, res) => {
 };
 
 // Update an existing transaction (for example, adjusting the amount or description)
-exports.updateTransaction = async (req, res) => {
+exports.CollabupdateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
     const { transactionType, amount, description } = req.body;
@@ -190,7 +197,7 @@ exports.updateTransaction = async (req, res) => {
 };
 
 // Delete a transaction
-exports.deleteTransaction = async (req, res) => {
+exports.deleteCollabTransaction = async (req, res) => {
   try {
     const { id } = req.params;
     const transaction = await Transaction.findByIdAndDelete(id);

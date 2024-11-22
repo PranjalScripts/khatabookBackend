@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const transactionSchema = new mongoose.Schema(
+const collabtransactionSchema = new mongoose.Schema(
   {
     bookId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -22,11 +22,8 @@ const transactionSchema = new mongoose.Schema(
       enum: ["you will get", "you will give"],
       required: true,
     },
-      file: {
-      type: String, 
-    },
 
-    
+    // Keep the transaction history, no limit (MongoDB will allow indefinite growth)
     transactionHistory: [
       {
         transactionType: {
@@ -104,6 +101,6 @@ transactionSchema.pre("save", async function (next) {
 });
 
 // Transaction model
-const Transaction = mongoose.model("Transaction", transactionSchema);
+const CollabTransaction = mongoose.model("Transaction", collabtransactionSchema);
 
-module.exports = Transaction;
+module.exports = CollabTransaction;
