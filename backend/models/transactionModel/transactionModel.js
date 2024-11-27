@@ -22,11 +22,9 @@ const transactionSchema = new mongoose.Schema(
       enum: ["you will get", "you will give"],
       required: true,
     },
-      file: {
-      type: String, 
+    file: {
+      type: String,
     },
-
-    
     transactionHistory: [
       {
         transactionType: {
@@ -48,6 +46,11 @@ const transactionSchema = new mongoose.Schema(
           type: Number,
           default: 0,
         },
+        confirmationStatus: {
+          type: String,
+          enum: ["pending", "confirmed"],
+          default: "pending", // Default status when a transaction is created
+        },
       },
     ],
     outstandingBalance: {
@@ -68,21 +71,23 @@ transactionSchema.pre("save", async function (next) {
     transaction.finalAmount = -transaction.amount;
   }
 
-  // Handle outstanding balance calculation
+  // Handle outstanding balance calculation only if the transaction is confirmed
   let newOutstandingBalance = transaction.outstandingBalance;
 
-  // If transaction type is "you will get", increase the outstanding balance
-  if (transaction.transactionType === "you will get") {
-    newOutstandingBalance += transaction.amount;
-  }
-  // If transaction type is "you will give", decrease the outstanding balance
-  else if (transaction.transactionType === "you will give") {
-    newOutstandingBalance -= transaction.amount;
-  }
-
-  // Ensure the transaction history has no duplicates: add the current transaction to history
+  // Check for the most recent transaction in the history
   const lastHistory =
     transaction.transactionHistory[transaction.transactionHistory.length - 1];
+
+  if (lastHistory && lastHistory.confirmationStatus === "confirmed") {
+    // If confirmed, update the outstanding balance
+    if (transaction.transactionType === "you will get") {
+      newOutstandingBalance += transaction.amount;
+    } else if (transaction.transactionType === "you will give") {
+      newOutstandingBalance -= transaction.amount;
+    }
+  }
+
+  // Ensure no duplicate transactions in the history
   if (
     !lastHistory ||
     lastHistory.transactionType !== transaction.transactionType ||
@@ -94,6 +99,7 @@ transactionSchema.pre("save", async function (next) {
       description: transaction.description,
       transactionDate: transaction.transactionDate,
       outstandingBalance: newOutstandingBalance,
+      confirmationStatus: "pending", // Default status
     });
   }
 

@@ -36,7 +36,6 @@ app.use("/api/v4/transaction", transactionRoutes);
 //api for collaborative books
  app.use("/api", transactionsRouter); // Prefix the router with `/api`
 
-  
  
 app.get("/", (req, res) => { res.send("<h1> Welcome to the Expense Management API</h1>") });
 
